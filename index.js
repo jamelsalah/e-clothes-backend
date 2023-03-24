@@ -1,9 +1,11 @@
 const express = require('express')
 const cors = require('cors');
-const app = express()
-const port = 3001
+const app = express();
+const port = 3001;
 
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const data = [
     {id: 1, category: "underwear", gender: "man", name: "Cueca Boxer Azul", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", price: "15,00", promo: 10, imgUrl: "", sizes: {p: [true, 10], m: [true, 10], eg: [false, 0], g: [true, 10], gg: [true, 10]}},
@@ -30,27 +32,71 @@ const data = [
 ]
 
 app.get('/home', (req, res) => {
-    res.send(data)
+    res.send(data);
 });
+
 app.get('/man', (req, res) => {
     var newData = [];
     
     data.map((product) => {
-        if(product.gender == "man") newData.push(product);
+        if(product.gender === "man") newData.push(product);
     })
 
     res.send(newData)
 });
+
 app.get('/woman', (req, res) => {
     var newData = [];
     
     data.map((product) => {
-        if(product.gender == "woman") newData.push(product);
+        if(product.gender === "woman") newData.push(product);
+    });
+
+    res.send(newData);
+});
+
+app.get('/underwear', (req, res) => {
+    var newData = [];
+    
+    data.map((product) => {
+        if(product.category === "underwear") newData.push(product);
     })
 
-    res.send(newData)
+    res.send(newData);
+});
+
+app.get('/pants', (req, res) => {
+    var newData = [];
+    
+    data.map((product) => {
+        if(product.gender === "pant") newData.push(product);
+    })
+
+    res.send(newData);
+});
+
+app.get('/t_shirts', (req, res) => {
+    var newData = [];
+    
+    data.map((product) => {
+        if(product.gender === "t_shirt") newData.push(product);
+    })
+
+    res.send(newData);
+});
+
+app.get('/add_product', (req, res) => {
+    res.send({
+        genders: ["man", "woman"]
+
+    })
+});
+
+app.post('/add_product', (req, res) => {
+    console.log(req.body);
+    res.sendStatus(200);
 });
 
 app.listen(port, () => {
-  console.log(`>>>>Backend Running on Port ${port}`)
+  console.log(`>>>>Backend Running on Port ${port}`);
 });

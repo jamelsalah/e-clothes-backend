@@ -7,6 +7,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const categories = [
+    {type: 'gender', value: 'man'},
+];
+
 const data = [
     {id: 1, category: "underwear", gender: "man", name: "Cueca Boxer Azul", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", price: "15,00", promo: 10, imgUrl: "", sizes: {p: [true, 10], m: [true, 10], eg: [false, 0], g: [true, 10], gg: [true, 10]}},
     {id: 2, category: "underwear", gender: "man", name: "Cueca Slip Preta", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.  sunt in culpa qui officia deserunt mollit anim id est laborum.", price: "49,90", promo: 0, imgUrl: "", sizes: {p: [true, 10], m: [true, 210], eg: [true, 120], g: [true, 120], gg: [true, 10]}},
@@ -32,64 +36,99 @@ const data = [
 ]
 
 app.get('/home', (req, res) => {
-    res.send(data);
-});
+    const category = req.query.category;
+    const gender = req.query.gender;
+    console.log(category);
+    console.log(gender)
 
-app.get('/man', (req, res) => {
-    var newData = [];
-    
-    data.map((product) => {
-        if(product.gender === "man") newData.push(product);
-    })
+    const newData = [...data];
 
-    res.send(newData)
-});
+    if(category) {
+        for(let i = newData.length-1; i >= 0; i--) {
+            if(newData[i].category !== category) newData.splice(i, 1);
+        }
+    } 
 
-app.get('/woman', (req, res) => {
-    var newData = [];
-    
-    data.map((product) => {
-        if(product.gender === "woman") newData.push(product);
-    });
-
-    res.send(newData);
-});
-
-app.get('/underwear', (req, res) => {
-    var newData = [];
-    
-    data.map((product) => {
-        if(product.category === "underwear") newData.push(product);
-    })
+    if(gender) {
+        for(let i = newData.length-1; i >= 0; i--) {
+            if(newData[i].gender !== gender) newData.splice(i, 1);
+        }
+    }
 
     res.send(newData);
 });
 
-app.get('/pants', (req, res) => {
-    var newData = [];
+// app.get('/man', (req, res) => {
+//     var newData = [];
     
-    data.map((product) => {
-        if(product.gender === "pant") newData.push(product);
-    })
+//     data.map((product) => {
+//         if(product.gender === "man") newData.push(product);
+//     })
 
-    res.send(newData);
+//     res.send(newData)
+// });
+
+// app.get('/woman', (req, res) => {
+//     var newData = [];
+    
+//     data.map((product) => {
+//         if(product.gender === "woman") newData.push(product);
+//     });
+
+//     res.send(newData);
+// });
+
+// app.get('/underwear', (req, res) => {
+//     var newData = [];
+    
+//     data.map((product) => {
+//         if(product.category === "underwear") newData.push(product);
+//     })
+
+//     res.send(newData);
+// });
+
+// app.get('/pants', (req, res) => {
+//     var newData = [];
+    
+//     data.map((product) => {
+//         if(product.gender === "pant") newData.push(product);
+//     })
+
+//     res.send(newData);
+// });
+
+// app.get('/t_shirts', (req, res) => {
+//     var newData = [];
+    
+//     data.map((product) => {
+//         if(product.gender === "t_shirt") newData.push(product);
+//     })
+
+//     res.send(newData);
+// });
+
+app.get('/categories', (req, res) => {
+    res.send(categories);
 });
 
-app.get('/t_shirts', (req, res) => {
-    var newData = [];
-    
-    data.map((product) => {
-        if(product.gender === "t_shirt") newData.push(product);
-    })
+app.post('/categories/add_category', (req, res) => {
+    const category = req.body;
+    console.log(category)
 
-    res.send(newData);
+    if(category.type  &&  category.value) {
+        categories.push(category);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(400);
+    }
 });
 
 app.get('/add_product', (req, res) => {
     res.send({
-        genders: ["man", "woman"]
-
-    })
+        genders: ["man", "woman"],
+        categories: categories
+    });
 });
 
 app.post('/add_product', (req, res) => {

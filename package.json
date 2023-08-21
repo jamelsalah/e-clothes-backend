@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "e_clothes backend.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6"
   }
 }

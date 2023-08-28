@@ -28,27 +28,50 @@ const data = [
     {id: 21, category: "underwear", gender: "woman", name: "Sutiã Bojo Rosa, Marrom, Vermelho", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", price: "29,90", promo: 0, imgUrl: "", sizes: {g: [true, 10], gg: [true, 30], xg: [false, 0]}}
 ]
 
-function getProducts(req, res) {
+import Category from '../models/category.js';
+import Product from '../models/product.js';
+
+async function getProducts(req, res) {
     const category = req.query.category;
     const gender = req.query.gender;
     console.log(category);
     console.log(gender)
 
-    const newData = [...data];
+    var products;
 
     if(category) {
-        for(let i = newData.length-1; i >= 0; i--) {
-            if(newData[i].category !== category) newData.splice(i, 1);
-        }
-    } 
-
-    if(gender) {
-        for(let i = newData.length-1; i >= 0; i--) {
-            if(newData[i].gender !== gender) newData.splice(i, 1);
-        }
+        products = await Product.findAll({
+            where: {category_name: category}
+        }).then((result) => {
+            return result;
+        }).catch((error) => {
+            return error
+        })
+    } else {
+        products = await Product.findAll().then((result) => {
+            return result;
+        }).catch((error) => {
+            return error
+        })
     }
 
-    res.send(newData);
+    if(gender) {
+        var genderNumber;
+        if(gender === "woman") {
+            genderNumber = 1;
+        } else {
+            genderNumber = 0;
+        }
+
+        products = await Product.findAll({
+            where: {gender: genderNumber}
+        }).then((result) => {
+            return result;
+        }).catch((error) => {
+            return error
+        })
+    }
+    res.send(products);
 };
 
 function addProductGet(req, res){
@@ -60,6 +83,8 @@ function addProductGet(req, res){
 
 function addProduct(req, res) {
     console.log(req.body);
+
+    //const { } = req.body
     res.sendStatus(200);
 };
 

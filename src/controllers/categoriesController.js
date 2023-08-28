@@ -4,9 +4,25 @@ const categories = [
     {type: 'category', value: 'underwear'},
 ];
 
+import Category from '../models/category.js';
 
-function getCategories(req, res) {
-    res.send(categories);
+
+async function getCategories(req, res) {
+    const categories = await Category.findAll().then((result) => {
+        return {success: true, dataValues: result};
+    }).catch((error) => {
+        return {success: false, error};
+    })
+    
+    if(categories.success) {
+        var sanitizedCategories = [];
+
+        for(let i in categories.dataValues) {
+            sanitizedCategories.push(categories.dataValues[i].dataValues)
+        }
+        console.log(sanitizedCategories)
+        res.send(sanitizedCategories);
+    }
 }
 
 function addCategory(req, res) {

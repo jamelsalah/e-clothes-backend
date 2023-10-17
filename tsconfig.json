@@ -1,11 +1,12 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist",
-      "module": "commonjs",
-      "target": "ES2019",
-      "esModuleInterop": true,
-      "allowJs": true,
-      "strictNullChecks": true
-    },
-    "include": ["src/**/*"]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "moduleResolution": "NodeNext",
+    "target": "ES2019",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "strictNullChecks": true
+  },
+  "include": ["./**/*.ts"]
 }

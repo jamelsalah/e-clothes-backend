@@ -1,20 +1,20 @@
 import { Model } from "sequelize";
 import User from "../../models/user";
-import bcrypt from "bcrypt";
 
 import { AddAccountModel, IAccountUseCase } from "../use-cases/AccountUseCase";
 import { ErrorAccountUseCase } from "./ErrorEmailService";
+import { EncrypterServices } from "../../data/Services/EncrypterServices";
 
 export class AddAccountUseCase implements IAccountUseCase {
   async add(account: AddAccountModel): Promise<Model<any, any>> {
     try {
       const user = new ErrorAccountUseCase();
       const userAlreadyExist = await user.EmailValidator(account.email);
-
+      const encrypt = new EncrypterServices();
       if (userAlreadyExist) {
         throw new Error("email already exist");
       }
-      const hashedPassword = await bcrypt.hash(account.password, 10);
+      const hashedPassword = await encrypt.encrypt(account.password);
 
       const createdAccount = await User.create({
         name: account.name,

@@ -30,4 +30,22 @@ export class AddAccountUseCase implements IAddAccountUseCase {
       throw new Error(` the error is :${error}`);
     }
   }
+
+  async enter(account: AddAccountModel): Promise<Boolean> {
+    try {
+      const user = User.findOne({ where: { email: account.email } });
+
+      if (!user) {
+        throw new Error(`email is not registered`);
+      }
+      const verifyPass = await bcrypt.compare(account.password, user.password);
+      if (!verifyPass) {
+        throw new Error(`Incorrectly password`);
+      }
+
+      return verifyPass;
+    } catch (error) {
+      throw new Error(`the error is:${error}`);
+    }
+  }
 }

@@ -8,4 +8,5 @@ export interface AddAccountModel {
 
 export interface IAddAccountUseCase {
   add(account: AddAccountModel): Promise<Model<any, any>>;
+  enter(account: AddAccountModel): Promise<Boolean>;
 }

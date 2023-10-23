@@ -6,7 +6,7 @@ export interface AddAccountModel {
   password: string;
 }
 
-export interface IAddAccountUseCase {
+export interface IAccountUseCase {
   add(account: AddAccountModel): Promise<Model<any, any>>;
   enter(account: AddAccountModel): Promise<Boolean>;
 }

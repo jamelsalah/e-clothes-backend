@@ -8,7 +8,7 @@ export class SignInController {
     const user = { email: email, password: password };
     const login = new AddAccountUseCase();
 
-    const enterUser = login.enter(user);
+    const enterUser = await login.enter(user);
 
     return res.json({ message: `${enterUser}` });
   }

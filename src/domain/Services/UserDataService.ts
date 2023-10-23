@@ -1,5 +1,7 @@
 import { Model } from "sequelize";
 import User from "../../models/user";
+import bcrypt from "bcrypt";
+
 import {
   AddAccountModel,
   IAddAccountUseCase,
@@ -12,14 +14,15 @@ export class AddAccountUseCase implements IAddAccountUseCase {
       const user = new ErrorAccountUseCase();
       const userAlreadyExist = await user.EmailValidator(account.email);
 
-      // if (userAlreadyExist) {
-      //   throw new Error("email already exist");
-      // }
+      if (userAlreadyExist) {
+        throw new Error("email already exist");
+      }
+      const hashedPassword = await bcrypt.hash(account.password, 10);
 
       const createdAccount = await User.create({
         name: account.name,
         email: account.email,
-        password: account.password,
+        password: hashedPassword,
       });
 
       return createdAccount;

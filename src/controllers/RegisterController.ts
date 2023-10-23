@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { AddAccountUseCase } from "../domain/Services/UserDataService";
+import bcrypt from "bcrypt";
 
 export class SignUpController {
   async handle(req: Request, res: Response): Promise<Response> {

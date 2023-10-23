@@ -21,26 +21,6 @@ const User = database.define("user", {
     type: Sequelize.CHAR(32),
     allowNull: false,
   },
-  phone_number: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  adress_1: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  adress_2: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  card_1: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  card_2: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
 });
 
 export default User;

@@ -1,5 +1,6 @@
 import { Model } from "sequelize";
 import User from "../../models/user";
+import bcrypt from 'bcrypt'
 
 import { AddAccountModel, IAccountUseCase } from "../use-cases/AccountUseCase";
 import { ErrorAccountUseCase } from "./ErrorEmailService";
@@ -30,12 +31,17 @@ export class AddAccountUseCase implements IAccountUseCase {
 
   async enter(account: AddAccountModel): Promise<Boolean> {
     try {
-      const user = await User.findOne({ where: { email: account.email } });
+      // const user = await User.findOne({ where: { email: account.email } });
+      // console.log(user)
 
-      if (!user) {
-        throw new Error(`email is not registered`);
-      }
-      const verifyPass = await bcrypt.compare(account.password, user.password);
+      // const user:AddAccountModel | null = await User.findOne({ where: { email: account.email } });
+      // console.log(user)
+
+      // if (!user) {
+      //   throw new Error(`email is not registered`);
+      // }
+
+      const verifyPass = await bcrypt.compare(account.password, 'salve');
       if (!verifyPass) {
         throw new Error(`Incorrectly password`);
       }

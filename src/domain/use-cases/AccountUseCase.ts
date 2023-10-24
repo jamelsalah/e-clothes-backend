@@ -1,7 +1,7 @@
 import { Model } from "sequelize";
 
 export interface AddAccountModel {
-  name: string;
+  name?: string;
   email: string;
   password: string;
 }
